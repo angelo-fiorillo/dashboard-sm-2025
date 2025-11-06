@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Call di Supporto e Integrazione 2025 | IO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            color: #17324d;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+            border-left: 5px solid #0066cc;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(23, 50, 77, 0.12);
+        }
+
+        .stat-card .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #0066cc;
+            margin: 10px 0;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .filters-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+        }
+
+        .filters-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #17324d;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-item label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #17324d;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            color: #17324d;
+            background: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .filter-item select:focus,
+        .filter-item input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            grid-column: 1 / -1;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-primary:hover {
+            background: #0052a3;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #17324d;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-export {
+            background: #2e7d32;
+            color: white;
+            flex: 0 1 auto;
+            min-width: 140px;
+            font-size: 12px;
+        }
+
+        .btn-export:hover {
+            background: #1b5e20;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-export-png {
+            background: #f57c00;
+            color: white;
+            flex: 0 1 auto;
+            min-width: 140px;
+            font-size: 12px;
+        }
+
+        .btn-export-png:hover {
+            background: #e65100;
+            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-container h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #17324d;
+            margin: 0;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 11px;
+            min-width: auto;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #17324d;
+            margin: 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        table thead {
+            background: #f5f7fa;
+            border-bottom: 2px solid #ddd;
+        }
+
+        table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: #17324d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-product {
+            background: #e3f2fd;
+            color: #0066cc;
+        }
+
+        .badge-entity {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        footer {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(23, 50, 77, 0.08);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2e7d32;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 25px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card .number {
+                font-size: 28px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-sm {
+                padding: 6px 10px;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .export-buttons button {
+                width: 100%;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard Call di Supporto e Integrazione 2025</h1>
+            <p>Analisi interattiva delle call con Enti e Partner Tecnologici - Gennaio ÷ Ottobre 2025</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">📞</div>
+                <div class="label">Total Call</div>
+                <div class="number" id="totalCalls">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🏛️</div>
+                <div class="label">Enti Unici</div>
+                <div class="number" id="uniqueEntes">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🛠️</div>
+                <div class="label">Prodotti</div>
+                <div class="number" id="uniqueProducts">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📅</div>
+                <div class="label">Mesi Attivi</div>
+                <div class="number" id="activeMonths">-</div>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <h3>🎯 Filtri Interattivi</h3>
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="productFilter">Prodotto</label>
+                    <select id="productFilter">
+                        <option value="">Tutti i prodotti</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="entityTypeFilter">Tipo Ente</label>
+                    <select id="entityTypeFilter">
+                        <option value="">Tutti i tipi</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="monthFilter">Mese</label>
+                    <select id="monthFilter">
+                        <option value="">Tutti i mesi</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="applyFilters()">🔍 Filtra</button>
+                    <button class="btn-secondary" onclick="resetFilters()">↺ Reset</button>
+                    <button class="btn-export" onclick="exportTableToCSV()">📥 Esporta Tabella CSV</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📈 Distribuzione per Prodotto</h3>
+                    <div class="export-buttons">
+                        <button class="btn-sm btn-export" onclick="exportChartToCSV('product')">CSV</button>
+                        <button class="btn-sm btn-export-png" onclick="exportChartToPNG('productChart', 'Distribuzione_Prodotto')">PNG</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="productChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>🏢 Distribuzione per Tipo Ente</h3>
+                    <div class="export-buttons">
+                        <button class="btn-sm btn-export" onclick="exportChartToCSV('entity')">CSV</button>
+                        <button class="btn-sm btn-export-png" onclick="exportChartToPNG('entityChart', 'Distribuzione_Ente')">PNG</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="entityChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📅 Andamento Mensile</h3>
+                    <div class="export-buttons">
+                        <button class="btn-sm btn-export" onclick="exportChartToCSV('month')">CSV</button>
+                        <button class="btn-sm btn-export-png" onclick="exportChartToPNG('monthChart', 'Andamento_Mensile')">PNG</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="monthChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>🎯 Top 10 Enti</h3>
+                    <div class="export-buttons">
+                        <button class="btn-sm btn-export" onclick="exportChartToCSV('topEntes')">CSV</button>
+                        <button class="btn-sm btn-export-png" onclick="exportChartToPNG('topEntesChart', 'Top10_Enti')">PNG</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="topEntesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h3>📋 Elenco Dettagliato Call</h3>
+            </div>
+            <div class="table-wrapper">
+                <table id="callsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Data</th>
+                            <th>Nome Ente/PT</th>
+                            <th>Prodotto</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="callsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>Dashboard interattiva con export | Dati estratti da Slack - Gennaio ÷ Ottobre 2025 | © 2025 PagoPA SpA</p>
+        </footer>
+    </div>
+
+    <script>
+        // Funzione di normalizzazione prodotti
+        function normalizeProduct(product) {
+            product = product.trim();
+            
+            // Consolida varianti di IO Base
+            if (["IO Base", "IO base", "App IO", "IO"].includes(product)) {
+                return "IO Base";
+            }
+            // Consolida varianti di SSO/FIMS
+            else if (["SSO/FIMS", "FIMS"].includes(product)) {
+                return "SSO/FIMS";
+            }
+            // Mantiene gli altri
+            return product;
+        }
+
+        const rawCallsData = [
+            {"ente": "Agenzia delle entrate-Riscossione", "prodotto": "IO Base", "data": "2025-01-08", "tipo": "Ente Centrale"},
+            {"ente": "Ministero dell'Economia e delle Finanze", "prodotto": "Firma con IO", "data": "2025-01-20", "tipo": "Ente Centrale"},
+            {"ente": "Roma mobilità", "prodotto": "IO Base", "data": "2025-01-20", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Trentino Digitale", "prodotto": "IO Base", "data": "2025-01-22", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Commissione di Garanzia Sciopero", "prodotto": "IO Base", "data": "2025-01-29", "tipo": "Ente Centrale"},
+            {"ente": "Gestore dei Servizi Energetici", "prodotto": "IO", "data": "2025-02-07", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Ministero dell'Interno - Dip. LCI", "prodotto": "IO Base", "data": "2025-02-17", "tipo": "Ente Centrale"},
+            {"ente": "Comune di Castegnato", "prodotto": "IO Base", "data": "2025-02-17", "tipo": "Comune"},
+            {"ente": "Ministero della Difesa", "prodotto": "IO Base", "data": "2025-02-17", "tipo": "Ente Centrale"},
+            {"ente": "Ministero della Difesa", "prodotto": "IO", "data": "2025-02-20", "tipo": "Ente Centrale"},
+            {"ente": "Insiel per Regione Friuli Venezia Giulia", "prodotto": "IO", "data": "2025-02-24", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Regione Puglia", "prodotto": "IO", "data": "2025-02-27", "tipo": "Regione/Provincia"},
+            {"ente": "IZS Teramo - Sanità Animale", "prodotto": "IO", "data": "2025-03-11", "tipo": "Ente Sanitario"},
+            {"ente": "Cineca", "prodotto": "Firma con IO", "data": "2025-03-11", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Regione Lazio", "prodotto": "IO", "data": "2025-03-14", "tipo": "Regione/Provincia"},
+            {"ente": "GSE Gestore Servizi Energetici", "prodotto": "IO", "data": "2025-03-14", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Comune Barano d'Ischia", "prodotto": "IO Base", "data": "2025-03-17", "tipo": "Comune"},
+            {"ente": "IZS Teramo - Sanità Animale", "prodotto": "IO", "data": "2025-03-18", "tipo": "Ente Sanitario"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-03-19", "tipo": "Ente Centrale"},
+            {"ente": "AUSL Valle d'Aosta", "prodotto": "IO Base", "data": "2025-03-25", "tipo": "Ente Sanitario"},
+            {"ente": "CSI Piemonte", "prodotto": "IO Base", "data": "2025-04-01", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Regione Veneto", "prodotto": "IO Base", "data": "2025-04-01", "tipo": "Regione/Provincia"},
+            {"ente": "Comune di San Vincenzo la Costa", "prodotto": "IO Premium", "data": "2025-04-07", "tipo": "Comune"},
+            {"ente": "CSI Piemonte", "prodotto": "IO Base", "data": "2025-04-07", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-04-08", "tipo": "Ente Centrale"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-04-09", "tipo": "Ente Centrale"},
+            {"ente": "Roma mobilità", "prodotto": "IO Base", "data": "2025-04-11", "tipo": "Ente Economico/Utilità"},
+            {"ente": "IZS Teramo", "prodotto": "IO Base", "data": "2025-04-15", "tipo": "Ente Sanitario"},
+            {"ente": "E-FIL", "prodotto": "SSO/FIMS", "data": "2025-04-16", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Ministero della Difesa", "prodotto": "IO Base", "data": "2025-04-17", "tipo": "Ente Centrale"},
+            {"ente": "Regione Friuli-Venezia Giulia", "prodotto": "IO", "data": "2025-04-18", "tipo": "Regione/Provincia"},
+            {"ente": "IRCCS - Fondazione G. Pascale", "prodotto": "IO Base", "data": "2025-04-22", "tipo": "Ente Sanitario"},
+            {"ente": "Comune di Treviso", "prodotto": "SSO/FIMS", "data": "2025-05-05", "tipo": "Comune"},
+            {"ente": "Comune di Treviso", "prodotto": "Firma con IO", "data": "2025-05-05", "tipo": "Comune"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-05-05", "tipo": "Ente Centrale"},
+            {"ente": "Regione Basilicata", "prodotto": "Firma con IO", "data": "2025-05-08", "tipo": "Regione/Provincia"},
+            {"ente": "Comune di Treviso", "prodotto": "SSO/FIMS", "data": "2025-05-12", "tipo": "Comune"},
+            {"ente": "Regione Lazio", "prodotto": "IO Base", "data": "2025-05-13", "tipo": "Regione/Provincia"},
+            {"ente": "Ministero della Cultura", "prodotto": "IO Base", "data": "2025-05-13", "tipo": "Ente Centrale"},
+            {"ente": "Polizia metropolitana Roma", "prodotto": "SEND", "data": "2025-05-20", "tipo": "Ente Centrale"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-05-23", "tipo": "Ente Centrale"},
+            {"ente": "Regione Toscana", "prodotto": "Firma con IO", "data": "2025-05-26", "tipo": "Regione/Provincia"},
+            {"ente": "Ministero Istruzione e Merito", "prodotto": "IO", "data": "2025-05-28", "tipo": "Ente Centrale"},
+            {"ente": "Regione Lazio", "prodotto": "IO", "data": "2025-05-29", "tipo": "Regione/Provincia"},
+            {"ente": "Comune di Foligno", "prodotto": "IO base", "data": "2025-06-04", "tipo": "Comune"},
+            {"ente": "Dipartimento Vigili del Fuoco", "prodotto": "IO Base", "data": "2025-06-04", "tipo": "Ente Centrale"},
+            {"ente": "Agenzia delle Entrate", "prodotto": "SSO/FIMS", "data": "2025-06-11", "tipo": "Ente Centrale"},
+            {"ente": "Vigili del Fuoco", "prodotto": "IO Base", "data": "2025-06-19", "tipo": "Ente Centrale"},
+            {"ente": "ASL Roma 1", "prodotto": "IO Base", "data": "2025-06-23", "tipo": "Ente Sanitario"},
+            {"ente": "Municipia", "prodotto": "Firma con IO", "data": "2025-06-26", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Ministero del Lavoro", "prodotto": "IO&SEND", "data": "2025-06-27", "tipo": "Ente Centrale"},
+            {"ente": "Argo Software", "prodotto": "IO", "data": "2025-06-30", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Wemapp", "prodotto": "SSO/FIMS", "data": "2025-07-03", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Ministero del Lavoro", "prodotto": "IO", "data": "2025-07-04", "tipo": "Ente Centrale"},
+            {"ente": "AdER", "prodotto": "IO Base", "data": "2025-07-08", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Ministero del Lavoro", "prodotto": "IO base", "data": "2025-07-10", "tipo": "Ente Centrale"},
+            {"ente": "Ministero Istruzione e Merito", "prodotto": "IO", "data": "2025-07-11", "tipo": "Ente Centrale"},
+            {"ente": "Comune di Perugia", "prodotto": "SSO/FIMS", "data": "2025-07-14", "tipo": "Comune"},
+            {"ente": "Università di Parma", "prodotto": "Firma con IO", "data": "2025-07-15", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "INSIEL / Regione FVG", "prodotto": "IO Base", "data": "2025-07-15", "tipo": "Regione/Provincia"},
+            {"ente": "Sogei", "prodotto": "Test servizio", "data": "2025-07-16", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Servizio Civile Universale", "prodotto": "Firma con IO", "data": "2025-07-17", "tipo": "Ente Centrale"},
+            {"ente": "Comune di San Sepolcro", "prodotto": "IO", "data": "2025-07-24", "tipo": "Comune"},
+            {"ente": "Cineca", "prodotto": "Firma con IO", "data": "2025-07-30", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Provincia di Bolzano", "prodotto": "IO", "data": "2025-08-04", "tipo": "Regione/Provincia"},
+            {"ente": "Regione Puglia", "prodotto": "SSO/FIMS", "data": "2025-09-10", "tipo": "Regione/Provincia"},
+            {"ente": "Regione Veneto", "prodotto": "IO Base", "data": "2025-09-11", "tipo": "Regione/Provincia"},
+            {"ente": "Insiel SpA", "prodotto": "IO Base", "data": "2025-09-15", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Webloom", "prodotto": "SSO/FIMS", "data": "2025-09-15", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Webloom", "prodotto": "Firma con IO", "data": "2025-09-18", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Università del Salento", "prodotto": "IO Base", "data": "2025-09-18", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Azienda Ospedale Università Padova", "prodotto": "IO", "data": "2025-09-23", "tipo": "Ente Sanitario"},
+            {"ente": "ARES-Sardegna", "prodotto": "IO base", "data": "2025-09-24", "tipo": "Ente Sanitario"},
+            {"ente": "Regione Veneto", "prodotto": "IO", "data": "2025-09-25", "tipo": "Regione/Provincia"},
+            {"ente": "Comune di Genova", "prodotto": "IO Base", "data": "2025-09-26", "tipo": "Comune"},
+            {"ente": "Azienda ULSS n.7 Pedemontana", "prodotto": "IO", "data": "2025-09-29", "tipo": "Ente Sanitario"},
+            {"ente": "Regione Lazio", "prodotto": "IO base", "data": "2025-09-30", "tipo": "Regione/Provincia"},
+            {"ente": "Unione delle Terre d'Argine", "prodotto": "Firma con IO", "data": "2025-10-01", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Unione delle Terre d'Argine", "prodotto": "Firma con IO", "data": "2025-10-01", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Intellera Consulting/CNR", "prodotto": "FIMS", "data": "2025-10-10", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Ministero della Cultura", "prodotto": "IO", "data": "2025-10-13", "tipo": "Ente Centrale"},
+            {"ente": "MEF", "prodotto": "App IO", "data": "2025-10-16", "tipo": "Ente Centrale"},
+            {"ente": "E-Fil Srl", "prodotto": "FIMS", "data": "2025-10-21", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Comune di Perugia", "prodotto": "SSO/FIMS", "data": "2025-10-22", "tipo": "Comune"},
+            {"ente": "Insiel SpA", "prodotto": "IO base", "data": "2025-10-22", "tipo": "Partner Tecnologico/Altro"},
+            {"ente": "Azienda Ospedale Università di Padova", "prodotto": "App IO", "data": "2025-10-24", "tipo": "Ente Sanitario"},
+            {"ente": "ACI - Automobile Club Italia", "prodotto": "IO base", "data": "2025-10-27", "tipo": "Ente Economico/Utilità"},
+            {"ente": "Comune di Vicopisano", "prodotto": "App IO", "data": "2025-10-28", "tipo": "Comune"},
+        ];
+
+        // Normalizza i prodotti
+        const callsData = rawCallsData.map(call => ({
+            ...call,
+            prodotto: normalizeProduct(call.prodotto)
+        }));
+
+        let charts = {};
+        let filteredData = [...callsData];
+        let chartsData = {};
+
+        function initializeDashboard() {
+            populateFilters();
+            updateStats();
+            createCharts();
+            populateTable();
+        }
+
+        function populateFilters() {
+            const products = [...new Set(callsData.map(c => c.prodotto))].sort();
+            const entityTypes = [...new Set(callsData.map(c => c.tipo))].sort();
+            const months = [...new Set(callsData.map(c => c.data.substring(0, 7)))].sort().reverse();
+
+            const productSelect = document.getElementById('productFilter');
+            products.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p;
+                option.textContent = p;
+                productSelect.appendChild(option);
+            });
+
+            const entitySelect = document.getElementById('entityTypeFilter');
+            entityTypes.forEach(t => {
+                const option = document.createElement('option');
+                option.value = t;
+                option.textContent = t;
+                entitySelect.appendChild(option);
+            });
+
+            const monthSelect = document.getElementById('monthFilter');
+            months.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m;
+                const dateObj = new Date(m + '-01');
+                option.textContent = dateObj.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' });
+                monthSelect.appendChild(option);
+            });
+        }
+
+        function updateStats() {
+            const uniqueEntes = [...new Set(filteredData.map(c => c.ente))].length;
+            const uniqueProducts = [...new Set(filteredData.map(c => c.prodotto))].length;
+            const activeMonths = [...new Set(filteredData.map(c => c.data.substring(0, 7)))].length;
+
+            document.getElementById('totalCalls').textContent = filteredData.length;
+            document.getElementById('uniqueEntes').textContent = uniqueEntes;
+            document.getElementById('uniqueProducts').textContent = uniqueProducts;
+            document.getElementById('activeMonths').textContent = activeMonths;
+        }
+
+        function createCharts() {
+            const colors = ['#0066cc', '#7b1fa2', '#2e7d32', '#f57c00', '#d32f2f', '#0097a7', '#fbc02d'];
+
+            // Chart 1: Prodotto
+            const productStats = {};
+            filteredData.forEach(c => {
+                productStats[c.prodotto] = (productStats[c.prodotto] || 0) + 1;
+            });
+            chartsData.product = productStats;
+
+            const productCtx = document.getElementById('productChart').getContext('2d');
+            if (charts.product) charts.product.destroy();
+            charts.product = new Chart(productCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(productStats),
+                    datasets: [{
+                        data: Object.values(productStats),
+                        backgroundColor: colors,
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { family: "'Lato', sans-serif", size: 12 }, padding: 15 }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Tipo Ente
+            const entityStats = {};
+            filteredData.forEach(c => {
+                entityStats[c.tipo] = (entityStats[c.tipo] || 0) + 1;
+            });
+            chartsData.entity = entityStats;
+
+            const entityCtx = document.getElementById('entityChart').getContext('2d');
+            if (charts.entity) charts.entity.destroy();
+            charts.entity = new Chart(entityCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(entityStats),
+                    datasets: [{
+                        label: 'Call',
+                        data: Object.values(entityStats),
+                        backgroundColor: '#0066cc',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { family: "'Lato', sans-serif", size: 12 } }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Chart 3: Andamento Mensile
+            const monthStats = {};
+            filteredData.forEach(c => {
+                const month = c.data.substring(0, 7);
+                monthStats[month] = (monthStats[month] || 0) + 1;
+            });
+            const sortedMonths = Object.keys(monthStats).sort();
+            const monthLabels = sortedMonths.map(m => {
+                const dateObj = new Date(m + '-01');
+                return dateObj.toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
+            });
+            chartsData.month = { labels: monthLabels, data: sortedMonths.map(m => monthStats[m]) };
+
+            const monthCtx = document.getElementById('monthChart').getContext('2d');
+            if (charts.month) charts.month.destroy();
+            charts.month = new Chart(monthCtx, {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{
+                        label: 'Call per Mese',
+                        data: sortedMonths.map(m => monthStats[m]),
+                        borderColor: '#0066cc',
+                        backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#0066cc',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { family: "'Lato', sans-serif", size: 12 } }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Chart 4: Top Enti
+            const enteStats = {};
+            filteredData.forEach(c => {
+                enteStats[c.ente] = (enteStats[c.ente] || 0) + 1;
+            });
+            const sortedEntes = Object.entries(enteStats)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            chartsData.topEntes = {
+                labels: sortedEntes.map(e => e[0]),
+                data: sortedEntes.map(e => e[1])
+            };
+
+            const topCtx = document.getElementById('topEntesChart').getContext('2d');
+            if (charts.topEntes) charts.topEntes.destroy();
+            charts.topEntes = new Chart(topCtx, {
+                type: 'bar',
+                data: {
+                    labels: sortedEntes.map(e => e[0].substring(0, 30) + (e[0].length > 30 ? '...' : '')),
+                    datasets: [{
+                        label: 'Call',
+                        data: sortedEntes.map(e => e[1]),
+                        backgroundColor: '#7b1fa2',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { family: "'Lato', sans-serif", size: 12 } }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function populateTable() {
+            const tbody = document.getElementById('callsTableBody');
+            tbody.innerHTML = '';
+
+            filteredData.slice(0, 50).forEach((call, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${new Date(call.data).toLocaleDateString('it-IT')}</td>
+                    <td>${call.ente}</td>
+                    <td><span class="badge badge-product">${call.prodotto}</span></td>
+                    <td><span class="badge badge-entity">${call.tipo}</span></td>
+                `;
+            });
+
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="no-data">Nessun dato disponibile</td></tr>';
+            }
+        }
+
+        function applyFilters() {
+            const product = document.getElementById('productFilter').value;
+            const entityType = document.getElementById('entityTypeFilter').value;
+            const month = document.getElementById('monthFilter').value;
+
+            filteredData = callsData.filter(c => {
+                return (!product || c.prodotto === product) &&
+                       (!entityType || c.tipo === entityType) &&
+                       (!month || c.data.startsWith(month));
+            });
+
+            updateStats();
+            createCharts();
+            populateTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('productFilter').value = '';
+            document.getElementById('entityTypeFilter').value = '';
+            document.getElementById('monthFilter').value = '';
+            filteredData = [...callsData];
+
+            updateStats();
+            createCharts();
+            populateTable();
+        }
+
+        function downloadCSV(filename, csvContent) {
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename + '.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ CSV esportato: ' + filename + '.csv');
+        }
+
+        function exportTableToCSV() {
+            let csv = '\uFEFF#,Data,Nome Ente/PT,Prodotto,Tipo\n';
+            filteredData.forEach((call, index) => {
+                const date = new Date(call.data).toLocaleDateString('it-IT');
+                const ente = '"' + call.ente.replace(/"/g, '""') + '"';
+                csv += `${index + 1},"${date}",${ente},"${call.prodotto}","${call.tipo}"\n`;
+            });
+            downloadCSV('Onboarding_Call_' + new Date().toISOString().split('T')[0], csv);
+        }
+
+        function exportChartToCSV(chartType) {
+            let csv = '';
+            let filename = '';
+
+            if (chartType === 'product') {
+                csv = 'Prodotto,N. Call\n';
+                Object.entries(chartsData.product || {}).forEach(([key, value]) => {
+                    csv += `"${key}",${value}\n`;
+                });
+                filename = 'Distribuzione_Prodotti';
+            } else if (chartType === 'entity') {
+                csv = 'Tipo Ente,N. Call\n';
+                Object.entries(chartsData.entity || {}).forEach(([key, value]) => {
+                    csv += `"${key}",${value}\n`;
+                });
+                filename = 'Distribuzione_Enti';
+            } else if (chartType === 'month') {
+                csv = 'Mese,N. Call\n';
+                if (chartsData.month) {
+                    chartsData.month.labels.forEach((label, idx) => {
+                        csv += `"${label}",${chartsData.month.data[idx]}\n`;
+                    });
+                }
+                filename = 'Andamento_Mensile';
+            } else if (chartType === 'topEntes') {
+                csv = 'Ente,N. Call\n';
+                if (chartsData.topEntes) {
+                    chartsData.topEntes.labels.forEach((label, idx) => {
+                        csv += `"${label}",${chartsData.topEntes.data[idx]}\n`;
+                    });
+                }
+                filename = 'Top10_Enti';
+            }
+
+            downloadCSV(filename + '_' + new Date().toISOString().split('T')[0], csv);
+        }
+
+        function exportChartToPNG(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = filename + '_' + new Date().toISOString().split('T')[0] + '.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ PNG esportato: ' + filename + '.png');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+</html>
